@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video On</title>
+    <link rel="Shortcut icon" href="Logoja e aplikacionit.jpg" type="image">
+
+    <style>
+        body {
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+        }
+
+        .menu {
+            margin-top: 20px; 
+            text-align: center;
+        }
+
+        .menu h4 {
+            display: inline-block;
+            color: black;
+            margin: 0 20px; 
+            cursor: pointer;
+        }
+
+        .left{}
+
+        .right {
+            right: 20px;
+            top: 100px;
+        }
+
+        .icon1 {
+            margin-top: 140px;
+            margin-right: -240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .icon2{
+            margin-top: 50px;
+            margin-right: -240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .icon2 a.active {
+            color: red;
+        }
+
+        .icon3{
+            margin-top: 50px;
+            margin-right: -240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+       
+    footer {
+      margin-top: auto;
+      padding: 15px 0;
+    }
+
+    .image-footer {
+        padding-top: 140px;
+        display: flex;
+        justify-content: space-around; 
+        align-items: center;
+    }
+
+    .image-footer a {
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+    }
+
+    .text-footer {
+        padding-top: px;
+        display: flex;
+        justify-content: space-around; 
+        align-items: center;
+    }
+
+    .text-footer a {
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+    }
+
+  </style>
+
+
+</head>
+
+<body>
+    <div class="menu">
+        <h4>Following</h4>
+        <h4>For You</h4>
+    </div>
+
+    <div class="left">
+    </div>
+
+    <div class="right"> 
+        <div class="icon1">
+            <a href="#">👤</a>
+        </div>
+        <div class="icon2">
+            <a href="#" id="heart-icon">🤍</a>
+        </div>
+        <div class="icon3">
+             <a href="#">💬</a>
+        </div>
+    </div>
+</body>
+
+<footer>
+
+    <div class="image-footer">
+        <div class="left">
+            <a href="Home.html">🛖</a>
+        </div>
+
+        <div class="middle-left">
+            <a href="AddVideo.html">➕</a>
+        </div>
+
+        <div class="middle-right">
+            <a href="Inbox.html">📩</a>
+        </div>
+
+        <div class="right">
+            <a href="Profile.html">👤</a>
+        </div>
+       
+    </div>
+
+     <div class="text-footer">
+      <div class="left">
+        <a href="Home.html">Home</a>
+      </div>
+
+      <div class="middle-left">
+        <a href="AddVideo.html">Add Video</a>
+      </div>
+
+      <div class="middle-right">
+        <a href="Inbox.html">Inbox</a>
+      </div>
+
+      <div class="right">
+        <a href="Profile.html">Profile</a>
+      </div>
+    </div>
+    </div>
+</footer>
+
+    <script>
+  const heart = document.getElementById('heart-icon');
+
+  heart.addEventListener('click', function(e) {
+    e.preventDefault(); // Parandalon redirect-in nga href="#"
+    
+    // Nëse është zemra e bardhë (🤍), e bëjmë të kuqe (❤️), dhe anasjelltas
+    if (this.textContent === '🤍') {
+      this.textContent = '❤️';
+      this.classList.add('active');
+    } else {
+      this.textContent = '🤍';
+      this.classList.remove('active');
+    }
+  });
+</script>
+
+</html>
