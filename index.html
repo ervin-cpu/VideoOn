@@ -1,183 +1,435 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video On</title>
-    <link rel="Shortcut icon" href="Logoja e aplikacionit.jpg" type="image">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video On</title>
+  <link rel="shortcut icon" href="Logoja e aplikacionit.jpg" type="image/x-icon"/>
 
-    <style>
-        body {
-            background-color: white;
-            margin: 0;
-            padding: 0;
-            font-family: Arial;
-        }
+  <style>
+    body {
+      background-color: white;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .menu {
-            margin-top: 20px; 
-            text-align: center;
-        }
+    .menu {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: white;
+      margin-top: 20px;
+      text-align: center;
+      z-index: 10;
+    }
 
-        .menu h4 {
-            display: inline-block;
-            color: black;
-            margin: 0 20px; 
-            cursor: pointer;
-        }
+    .menu a {
+      display: inline-block;
+      text-decoration: none;
+      color: black;
+      margin: 0 20px;
+      font-size: 18px;
+    }
 
-        .left{}
+    .menu a:hover {
+      color: rgb(174, 13, 13);
+    }
 
-        .right {
-            right: 20px;
-            top: 100px;
-        }
+    .video-container {
+      flex: 1;
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+    }
 
-        .icon1 {
-            margin-top: 140px;
-            margin-left: 240px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 60px;
-        }
+    .video-container::-webkit-scrollbar {
+      display: none;
+    }
 
-        .icon2{
-            margin-top: 50px;
-            margin-left: 240px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 60px;
-        }
+    .video-item {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: start;
+      position: relative;
+    }
 
-        .icon2 a.active {
-            color: red;
-        }
+    .video-item video {
+      width: 375px;
+      height: calc(100vh - 80px - 60px - 10px);
+      margin-top: 85px;
+      margin-bottom: 65px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
 
-        .icon3{
-            margin-top: 50px;
-            margin-left: 240px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 60px;
-        }
-       
+    .right {
+      position: fixed;
+      right: 20px;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 10;
+    }
+
+    .icon1 a, .icon2 a, .icon3 a {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 65px;
+      margin-bottom: 10px;
+      color: black;
+      font-size: 24px;
+    }
+
+    .icon1 a:hover, .icon2 a:hover, .icon3 a:hover {
+      transform: scale(1.2);
+      color: rgb(174, 13, 13);
+    }
+
+    .icon2 span {
+      margin-left: 11px;
+      font-size: 16px;
+      color: black;
+    }
+
+    .icon2 a.active {
+      color: rgb(174, 13, 13);
+    }
+
     footer {
-      margin-top: auto;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
       padding: 15px 0;
+      z-index: 10;
     }
 
-    .image-footer {
-        padding-top: 140px;
-        display: flex;
-        justify-content: space-around; 
-        align-items: center;
+    .image-footer, .text-footer {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
 
-    .image-footer a {
-        text-decoration: none;
-        color: black;
-        font-size: 16px;
+    .image-footer a, .text-footer a {
+      text-decoration: none;
+      color: black;
+      font-size: 16px;
     }
 
-    .text-footer {
-        padding-top: px;
-        display: flex;
-        justify-content: space-around; 
-        align-items: center;
+    .image-footer a:hover, .text-footer a:hover {
+      color: rgb(174, 13, 13);
     }
 
-    .text-footer a {
-        text-decoration: none;
-        color: black;
-        font-size: 16px;
+    /* Komente */
+    .icon3 span {
+      margin-left: 11px;
+      font-size: 16px;
+      color: black;
     }
 
+    #comment-section {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+      z-index: 999;
+    }
+
+    #comments-list {
+      max-height: 100px;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+    }
+
+    #comment-input {
+      width: 50%;
+      padding: 8px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #comment-section button {
+      padding: 8px 12px;
+      border: none;
+      background: black;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      margin-left: 10px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
   </style>
-
-
 </head>
 
 <body>
-    <div class="menu">
-        <h4>Following</h4>
-        <h4>For You</h4>
+
+  <div class="menu">
+    <a href="Following.html">Following</a>
+    <a href="index.html">For You</a>
+  </div>
+
+  <div class="video-container">
+    <div class="video-item">
+      <video autoplay loop playsinline>
+        <source src="SnapTik-dot-Kim-096e778e3580b202fc16c47ad322fa37.mp4" type="video/mp4" />
+      </video>
     </div>
-
-    <div class="left">
+    <div class="video-item">
+      <video autoplay loop playsinline>
+        <source src="SnapTik-dot-Kim-49718ee36fd3a36859ad0886d2d73858.mp4" type="video/mp4" />
+      </video>
     </div>
+  </div>
 
-    <div class="right"> 
-        <div class="icon1">
-            <a href="#">👤</a>
-        </div>
-        <div class="icon2">
-            <a href="#" id="heart-icon">🤍</a>
-        </div>
-        <div class="icon3">
-             <a href="#">💬</a>
-        </div>
+  <div class="right">
+    <div class="icon1">
+      <a href="#">👤</a>
     </div>
-</body>
+    <div class="icon2">
+      <a href="#" id="heart-icon">🤍</a>
+      <span id="like-count">0</span>
+    </div>
+    <div class="icon3">
+      <a href="#" onclick="toggleComments()">💬</a>
+    </div>
+  </div>
 
-<footer>
+  <div id="comment-section">
+    <h4>Komentet</h4>
+    <div id="comments-list"></div>
+    <input type="text" id="comment-input" placeholder="Shkruaj komentin..." />
+    <button onclick="addComment()">Shto Koment</button>
+  </div>
 
+  <footer>
     <div class="image-footer">
-        <div class="left">
-            <a href="Home.html">🛖</a>
-        </div>
-
-        <div class="middle-left">
-            <a href="AddVideo.html">➕</a>
-        </div>
-
-        <div class="middle-right">
-            <a href="Inbox.html">📩</a>
-        </div>
-
-        <div class="right">
-            <a href="Profile.html">👤</a>
-        </div>
-       
+      <a href="index.html">🛖</a>
+      <a href="AddVideo.html">➕</a>
+      <a href="Inbox.html">📩</a>
+      <a href="Profile.html">👤</a>
     </div>
-
-     <div class="text-footer">
-      <div class="left">
-        <a href="Home.html">Home</a>
-      </div>
-
-      <div class="middle-left">
-        <a href="AddVideo.html">Add Video</a>
-      </div>
-
-      <div class="middle-right">
-        <a href="Inbox.html">Inbox</a>
-      </div>
-
-      <div class="right">
-        <a href="Profile.html">Profile</a>
-      </div>
+    <div class="text-footer">
+      <a href="index.html">Home</a>
+      <a href="AddVideo.html">Add Video</a>
+      <a href="Inbox.html">Inbox</a>
+      <a href="Profile.html">Profile</a>
     </div>
-    </div>
-</footer>
+  </footer>
 
-    <script>
-  const heart = document.getElementById('heart-icon');
+  <script>
+    const heart = document.getElementById('heart-icon');
+    const likeCount = document.getElementById('like-count');
+    const videoContainer = document.querySelector('.video-container');
 
-  heart.addEventListener('click', function(e) {
-    e.preventDefault(); // Parandalon redirect-in nga href="#"
-    
-    // Nëse është zemra e bardhë (🤍), e bëjmë të kuqe (❤️), dhe anasjelltas
-    if (this.textContent === '🤍') {
-      this.textContent = '❤️';
-      this.classList.add('active');
-    } else {
-      this.textContent = '🤍';
-      this.classList.remove('active');
+    heart.addEventListener('click', function(e) {
+      e.preventDefault();
+      let count = parseInt(likeCount.textContent);
+      if (this.textContent === '🤍') {
+        this.textContent = '❤️';
+        this.classList.add('active');
+        likeCount.textContent = count + 1;
+      } else {
+        this.textContent = '🤍';
+        this.classList.remove('active');
+        if (count > 0) likeCount.textContent = count - 1;
+      }
+    });
+
+    function manageVideoPlayback() {
+      const videos = document.querySelectorAll('.video-item video');
+      const containerHeight = videoContainer.clientHeight;
+      const scrollTop = videoContainer.scrollTop;
+
+      videos.forEach(video => {
+        const videoTop = video.parentElement.offsetTop;
+        if (videoTop >= scrollTop && videoTop < scrollTop + containerHeight) {
+          video.play().catch(() => {
+            video.muted = true;
+            video.play();
+          });
+          video.muted = false;
+        } else {
+          video.pause();
+          video.muted = true;
+        }
+      });
+    }
+
+    manageVideoPlayback();
+    videoContainer.addEventListener('scroll', manageVideoPlayback);
+
+    let touchStartY = 0, touchEndY = 0;
+
+    videoContainer.addEventListener('touchstart', e => {
+      touchStartY = e.changedTouches[0].screenY;
+    });
+
+    videoContainer.addEventListener('touchend', e => {
+      touchEndY = e.changedTouches[0].screenY;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndY - touchStartY;
+      const minSwipeDistance = 50;
+      if (swipeDistance > minSwipeDistance) scrollToPreviousVideo();
+      else if (swipeDistance < -minSwipeDistance) scrollToNextVideo();
+    }
+
+    let isScrolling = false;
+    videoContainer.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (isScrolling) return;
+      isScrolling = true;
+      setTimeout(() => { isScrolling = false; }, 300);
+      const delta = e.deltaY;
+      delta > 0 ? scrollToNextVideo() : scrollToPreviousVideo();
+    }, { passive: false });
+
+    document.addEventListener('keydown', (e) => {
+      if (isScrolling) return;
+      isScrolling = true;
+      setTimeout(() => { isScrolling = false; }, 300);
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') scrollToNextVideo();
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') scrollToPreviousVideo();
+    });
+
+    function scrollToNextVideo() {
+      const videos = document.querySelectorAll('.video-item');
+      const currentScroll = videoContainer.scrollTop;
+      const containerHeight = videoContainer.clientHeight;
+      for (let i = 0; i < videos.length; i++) {
+        if (videos[i].offsetTop > currentScroll + containerHeight / 2) {
+          videoContainer.scrollTo({ top: videos[i].offsetTop, behavior: 'smooth' });
+          break;
+        }
+      }
+    }
+
+    function scrollToPreviousVideo() {
+      const videos = document.querySelectorAll('.video-item');
+      const currentScroll = videoContainer.scrollTop;
+      const containerHeight = videoContainer.clientHeight;
+      for (let i = videos.length - 1; i >= 0; i--) {
+        if (videos[i].offsetTop < currentScroll - containerHeight / 2) {
+          videoContainer.scrollTo({ top: videos[i].offsetTop, behavior: 'smooth' });
+          break;
+        }
+      }
+    }
+
+    // ================= Komentet =================
+    const username = localStorage.getItem("username") || "Username";
+
+    function toggleComments() {
+      const section = document.getElementById("comment-section");
+      section.style.display = section.style.display === "none" ? "block" : "none";
+      displayComments();
+    }
+
+    function addComment() {
+      const input = document.getElementById("comment-input");
+      const text = input.value.trim();
+      if (!text) return;
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments.push({ text, user: username });
+      localStorage.setItem("comments", JSON.stringify(comments));
+      input.value = "";
+      displayComments();
+    }
+
+    function displayComments() {
+      const list = document.getElementById("comments-list");
+      list.innerHTML = "";
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+
+      comments.forEach((comment, index) => {
+        const div = document.createElement("div");
+        div.style.marginBottom = "8px";
+
+        const strong = document.createElement("strong");
+        strong.textContent = comment.user + ": ";
+
+        const span = document.createElement("span");
+        span.textContent = comment.text;
+
+        div.appendChild(strong);
+        div.appendChild(span);
+
+        if (comment.user === username || username === "Ervin") {
+          const del = document.createElement("button");
+          del.textContent = "❌";
+          del.className = "delete-btn";
+          del.onclick = () => deleteComment(index);
+          div.appendChild(del);
+        }
+
+        list.appendChild(div);
+      });
+    }
+
+    function deleteComment(index) {
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments.splice(index, 1);
+      localStorage.setItem("comments", JSON.stringify(comments));
+      displayComments();
+    }
+
+     // ================= Numri i komenteve =================
+
+
+    // ================= Mbyll Komentet kur klikon jashtë =================
+
+  document.addEventListener('click', function (e) {
+    const commentSection = document.getElementById("comment-section");
+    const isCommentBtn = e.target.closest('.icon3'); // ndroje nëse emri yt është tjetër
+    const isInsideComments = commentSection.contains(e.target);
+
+    if (!isInsideComments && !isCommentBtn && commentSection.style.display === "block") {
+      commentSection.style.display = "none";
     }
   });
-</script>
 
-</html>
+  // Opsionale: mbyll komentet vetëm kur klikon në video
+  const videos = document.querySelectorAll(".video-item video");
+  videos.forEach(video => {
+    video.addEventListener("click", () => {
+      const section = document.getElementById("comment-section");
+      if (section.style.display === "block") {
+        section.style.display = "none";
+      }
+    });
+  });
+  </script>
+
+</body>
+</html> 
